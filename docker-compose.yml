@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cqrs
+      MYSQL_USER: cqrs
+      MYSQL_PASSWORD: cqrs
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+    - "3306:3306"
+  app:
+    env_file:
+      - .env.local
+    build: .
+    environment:
+      DB_USER: cqrs
+      DB_PASSWORD: cqrs
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: cqrs
+    volumes:
+      - ".:/go/src/github.com/JackMaarek/cqrs"
+    ports:
+      - "8000:8080"
+    tty: true
+    links:
+      - db
+    depends_on:
+      - db
+    restart: always
