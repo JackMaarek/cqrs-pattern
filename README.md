@@ -1,14 +1,14 @@
-#Event Sourcing & CQRS Pattern
+# Event Sourcing & CQRS Pattern
 
 Introduction to Event sourcing and CQRS application architecture patterns into practice.
 
-##Stack
+## Stack
 - go
 - mysql
 - redis
 - docker
 
-##Project setup
+## Project setup
 1- Clone the repository
 
 2- Run `docker-compose up --build` to build the containers
