@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/JackMaarek/cqrsPattern/models"
-	routes "github.com/JackMaarek/cqrsPattern/router"
-	"github.com/JackMaarek/cqrsPattern/validators"
+	"github.com/JackMaarek/cqrsPattern/application/models"
+	routes "github.com/JackMaarek/cqrsPattern/application/router"
+	"github.com/JackMaarek/cqrsPattern/application/validators"
+	"github.com/JackMaarek/cqrsPattern/domain"
 	"github.com/caarlos0/env"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -28,6 +29,7 @@ func main() {
 	routes.SetupRouter(router)
 	//go bus.HandleRequest(&channels.C)
 	validators.InitValidator()
+	domain.InitBuses()
 
 	log.Fatal(router.Run(":8080"))
 }
