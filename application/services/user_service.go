@@ -6,13 +6,13 @@ import (
 	"github.com/JackMaarek/cqrsPattern/application/validators"
 	"github.com/JackMaarek/cqrsPattern/chore/cqrs"
 	"github.com/JackMaarek/cqrsPattern/domain"
-	"github.com/JackMaarek/cqrsPattern/domain/user"
+	"github.com/JackMaarek/cqrsPattern/domain/users"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func GetUserList(c *gin.Context) (interface{}, error) {
-	query := cqrs.NewQueryMessage(&user.FindUsersQuery{})
+	query := cqrs.NewQueryMessage(&users.FindUsersQuery{})
 	ul, err := domain.Qb.Dispatch(query)
 	if err != nil {
 		c.JSON(http.StatusNoContent, "")
@@ -23,7 +23,7 @@ func GetUserList(c *gin.Context) (interface{}, error) {
 
 func GetUser(c *gin.Context) (interface{}, error) {
 	id := util.ParseStringToUint64(c.Param("id"))
-	query := cqrs.NewQueryMessage(&user.FindUserByIdQuery{UserId: id})
+	query := cqrs.NewQueryMessage(&users.FindUserByIdQuery{UserId: id})
 	ul, err := domain.Qb.Dispatch(query)
 	if err != nil {
 		c.JSON(http.StatusNoContent, "")
@@ -40,7 +40,7 @@ func CreateUser(c *gin.Context) (interface{}, error) {
 	if err := c.ShouldBindJSON(&userForm); err != nil {
 		return nil, err
 	}
-	command := cqrs.NewCommandMessage(&user.CreateUserCommand{UserForm: &userForm})
+	command := cqrs.NewCommandMessage(&users.CreateUserCommand{UserForm: &userForm})
 	usr, err := domain.Cb.Dispatch(command)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, "Could not create user.")
@@ -59,7 +59,7 @@ func UpdateUser(c *gin.Context) (interface{}, error){
 		return nil, err
 	}
 	id := util.ParseStringToUint64(c.Param("id"))
-	command := cqrs.NewCommandMessage(&user.PUTUserCommand{UserId: id, UserForm: &userForm})
+	command := cqrs.NewCommandMessage(&users.PUTUserCommand{UserId: id, UserForm: &userForm})
 	usr, err := domain.Cb.Dispatch(command)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "")
@@ -70,7 +70,7 @@ func UpdateUser(c *gin.Context) (interface{}, error){
 
 func RemoveUser(c *gin.Context) error {
 	id := util.ParseStringToUint64(c.Param("id"))
-	command := cqrs.NewCommandMessage(&user.DeleteUserCommand{UserId: id})
+	command := cqrs.NewCommandMessage(&users.DeleteUserCommand{UserId: id})
 	_, err := domain.Cb.Dispatch(command)
 	if err != nil {
 		c.JSON(http.StatusNotModified, "")
