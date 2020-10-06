@@ -2,7 +2,7 @@ package domain
 
 import (
 	"github.com/JackMaarek/cqrsPattern/chore/cqrs"
-	"github.com/JackMaarek/cqrsPattern/domain/user"
+	"github.com/JackMaarek/cqrsPattern/domain/users"
 )
 
 var Cb *cqrs.CommandBus
@@ -12,9 +12,9 @@ func InitBuses()  {
 	Cb = cqrs.NewCommandBus()
 	Qb = cqrs.NewQueryBus()
 
-	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.CreateUserCommand{})
-	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.PUTUserCommand{})
-	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.DeleteUserCommand{})
-	_ = Qb.RegisterHandler(user.NewCreateUserQueryHandler(), &user.FindUsersQuery{})
-	_ = Qb.RegisterHandler(user.NewCreateUserQueryHandler(), &user.FindUserByIdQuery{})
+	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.CreateUserCommand{})
+	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.PUTUserCommand{})
+	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.DeleteUserCommand{})
+	_ = Qb.RegisterHandler(users.NewCreateUserQueryHandler(), &users.FindUsersQuery{})
+	_ = Qb.RegisterHandler(users.NewCreateUserQueryHandler(), &users.FindUserByIdQuery{})
 }
