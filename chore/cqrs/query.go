@@ -58,4 +58,3 @@ func (c *QueryDescriptor) QueryType() string {
 func (c *QueryDescriptor) Payload() interface{} {
 	return c.query
 }
-

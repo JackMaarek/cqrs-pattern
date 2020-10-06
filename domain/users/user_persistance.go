@@ -32,7 +32,7 @@ func PersistUser(form *forms.UserForm) (*models.User, error) {
 		Password: form.Password,
 		Email:    form.Email,
 	}
-	if err := validators.BeforeSave(&u); err != nil{
+	if err := validators.BeforeSave(&u); err != nil {
 		return nil, err
 	}
 	usr, err := repo.CreateUser(&u)
@@ -49,7 +49,7 @@ func ModifyUser(id uint64, form *forms.UserForm) (*models.User, error) {
 		Password: form.Password,
 		Email:    form.Email,
 	}
-	if err := validators.BeforeSave(&u); err != nil{
+	if err := validators.BeforeSave(&u); err != nil {
 		return nil, err
 	}
 	fmt.Println(form.Email)

@@ -11,7 +11,7 @@ type CreateUserCommand struct {
 }
 
 type PUTUserCommand struct {
-	UserId uint64
+	UserId   uint64
 	UserForm *forms.UserForm
 }
 
@@ -19,7 +19,7 @@ type DeleteUserCommand struct {
 	UserId uint64
 }
 
-type CreateUserCommandHandler struct {}
+type CreateUserCommandHandler struct{}
 
 func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interface{}, error) {
 

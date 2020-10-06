@@ -51,11 +51,22 @@ func UpdateUser(c *gin.Context) {
 	return
 }
 
-func DeleteUser(c *gin.Context)  {
+func DeleteUser(c *gin.Context) {
 	err := services.RemoveUser(c)
 	if err != nil {
 		return
 	}
 	c.JSON(http.StatusOK, "User deleted")
+	return
+}
+
+func UserTopupTransaction(c *gin.Context) {
+	services.TopupAccount(c)
+	c.JSON(http.StatusOK, "")
+	return
+}
+
+func UserTopupHistory(c *gin.Context) {
+	services.GetAccountHistory(c)
 	return
 }

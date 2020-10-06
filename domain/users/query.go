@@ -6,14 +6,13 @@ import (
 )
 
 type FindUsersQuery struct {
-
 }
 
-type FindUserByIdQuery struct{
+type FindUserByIdQuery struct {
 	UserId uint64
 }
 
-type CreateUserQueryHandler struct {}
+type CreateUserQueryHandler struct{}
 
 func (ch CreateUserQueryHandler) Handle(query cqrs.QueryMessage) (interface{}, error) {
 	switch qry := query.Payload().(type) {

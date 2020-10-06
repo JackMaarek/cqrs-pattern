@@ -10,11 +10,11 @@ import (
 func ValidateJsonHeader(c *gin.Context) error {
 	header := structs.Header{}
 	if err := c.ShouldBindHeader(&header); err != nil {
-		c.JSON(http.StatusBadRequest,"")
+		c.JSON(http.StatusBadRequest, "")
 		return err
 	}
 	if header.ContentType != "application/json" {
-		c.JSON(http.StatusBadRequest,"")
+		c.JSON(http.StatusBadRequest, "")
 		return errors.New("Wrong content type.")
 	}
 	return nil
