@@ -2,12 +2,12 @@ package event
 
 import (
 	"errors"
-	"github.com/JackMaarek/cqrsPattern/application/events"
 	"github.com/JackMaarek/cqrsPattern/chore/cqrs"
+	es "github.com/JackMaarek/cqrsPattern/chore/event-sourcing"
 )
 
 type CreateUserTopupAccountCommand struct {
-	TopupEvent *events.TopUp
+	TopupEvent *es.TopUp
 }
 
 type CreateEventCommandHandler struct{}
