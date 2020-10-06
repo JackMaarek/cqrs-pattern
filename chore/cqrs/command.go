@@ -20,11 +20,11 @@ func NewCommandBus() *CommandBus  {
 	}
 }
 
-func (b *CommandBus) Dispatch(command CommandMessage) error {
+func (b *CommandBus) Dispatch(command CommandMessage) (interface{}, error) {
 	if handler, ok := b.handlers[command.CommandType()]; ok{
 		return handler.Handle(command)
 	}
-	return fmt.Errorf("the command bus does not have a handler for commands of type: %s", command.CommandType())
+	return nil, fmt.Errorf("the command bus does not have a handler for commands of type: %s", command.CommandType())
 }
 
 func (b *CommandBus) RegisterHandler(handler CommandHandler, command interface{}) error {

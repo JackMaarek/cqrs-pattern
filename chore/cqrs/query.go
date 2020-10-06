@@ -51,7 +51,7 @@ func NewQueryMessage(query interface{}) *QueryDescriptor {
 }
 
 func (c *QueryDescriptor) QueryType() string {
-	return reflect.ValueOf(c.query).Elem().String()
+	return reflect.TypeOf(c.query).Elem().Name()
 }
 
 // Command returns the actual command payload of the message.

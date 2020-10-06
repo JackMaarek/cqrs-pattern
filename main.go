@@ -27,7 +27,6 @@ func main() {
 	models.MakeMigrations()
 	router := gin.Default()
 	routes.SetupRouter(router)
-	//go bus.HandleRequest(&channels.C)
 	validators.InitValidator()
 	domain.InitBuses()
 

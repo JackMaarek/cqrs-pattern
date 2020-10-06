@@ -11,6 +11,7 @@ type CreateUserCommand struct {
 }
 
 type PUTUserCommand struct {
+	UserId uint64
 	UserForm *forms.UserForm
 }
 
@@ -19,22 +20,24 @@ type DeleteUserCommand struct {
 }
 type CreateUserCommandHandler struct {}
 
-func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) error {
+func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interface{}, error) {
 
 	switch cmd := command.Payload().(type) {
 	case *CreateUserCommand:
-		if err := PersistUser(cmd.UserForm); err != nil {
-			return err
+		if usr, err := PersistUser(cmd.UserForm); err != nil {
+			return nil, err
+		} else {
+			return usr, nil
 		}
 	case *PUTUserCommand:
-		if err := ModifyUser(cmd.UserForm); err != nil {
-			return nil
+		if usr, err := ModifyUser(cmd.UserId, cmd.UserForm); err != nil {
+			return nil, err
+		} else {
+			return usr, nil
 		}
 	default:
-		return errors.New("bad command type")
+		return nil, errors.New("bad command type")
 	}
-
-	return nil
 }
 
 func NewCreateUserCommandHandler() *CreateUserCommandHandler {

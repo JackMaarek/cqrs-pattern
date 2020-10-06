@@ -13,5 +13,6 @@ func InitBuses()  {
 	Qb = cqrs.NewQueryBus()
 
 	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.CreateUserCommand{})
+	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.PUTUserCommand{})
 	_ = Qb.RegisterHandler(user.NewCreateUserQueryHandler(), &user.FindUserQuery{})
 }

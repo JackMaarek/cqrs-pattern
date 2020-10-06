@@ -12,18 +12,18 @@ type FindUserQuery struct {
 
 type CreateUserQueryHandler struct {}
 
-func (ch CreateUserQueryHandler) Handle(command cqrs.QueryMessage) (interface{}, error) {
-	fmt.Println(command)
-	switch cmd := command.Payload().(type) {
+func (ch CreateUserQueryHandler) Handle(query cqrs.QueryMessage) (interface{}, error) {
+	switch qry := query.Payload().(type) {
 	case *FindUserQuery:
-		fmt.Println(cmd)
+		fmt.Println(qry)
 		ul, err := GetUsers()
+		fmt.Println(ul)
 		if err != nil {
 			return nil, err
 		}
 		return ul, nil
 	default:
-		return nil, errors.New("bad command type")
+		return nil, errors.New("bad query type")
 	}
 }
 

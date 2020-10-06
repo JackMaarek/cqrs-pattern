@@ -11,6 +11,9 @@ func GetUserList(c *gin.Context) {
 	if err != nil {
 		return
 	}
+	if ul == nil {
+		return
+	}
 	c.JSON(http.StatusOK, ul)
 	return
 
@@ -18,6 +21,16 @@ func GetUserList(c *gin.Context) {
 
 func CreateUser(c *gin.Context) {
 	cmd, err := services.CreateUser(c)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
+		return
+	}
+	c.JSON(http.StatusCreated, cmd)
+	return
+}
+
+func UpdateUser(c *gin.Context) {
+	cmd, err := services.UpdateUser(c)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		c.Abort()

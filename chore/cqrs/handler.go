@@ -1,7 +1,7 @@
 package cqrs
 
 type CommandHandler interface {
-	Handle(CommandMessage) error
+	Handle(CommandMessage) (interface{}, error)
 }
 
 type QueryHandler interface {

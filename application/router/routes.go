@@ -6,6 +6,10 @@ import (
 )
 
 func SetupRouter(router *gin.Engine) {
-	router.POST("/users", controllers.CreateUser)
-	router.GET("users", controllers.GetUserList)
+	apiV1 := router.Group("/v1")
+
+	users := apiV1.Group("/users")
+	users.POST("/", controllers.CreateUser)
+	users.GET("/", controllers.GetUserList)
+	users.PUT("/:id", controllers.UpdateUser)
 }

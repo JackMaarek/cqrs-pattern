@@ -1,13 +1,14 @@
 package user
 
 import (
+	"fmt"
 	"github.com/JackMaarek/cqrsPattern/application/models"
 	"github.com/JackMaarek/cqrsPattern/application/repo"
 	"github.com/JackMaarek/cqrsPattern/application/structs/forms"
 	"github.com/JackMaarek/cqrsPattern/application/validators"
 )
 
-func PersistUser(form *forms.UserForm) error {
+func PersistUser(form *forms.UserForm) (*models.User, error) {
 	u := models.User{
 		Name:     form.Name,
 		Surname:  form.Surname,
@@ -15,32 +16,36 @@ func PersistUser(form *forms.UserForm) error {
 		Email:    form.Email,
 	}
 	if err := validators.BeforeSave(&u); err != nil{
-		return err
+		return nil, err
 	}
-	_, err := repo.CreateUser(&u)
+	usr, err := repo.CreateUser(&u)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return usr, nil
 }
 
-func ModifyUser(form *forms.UserForm) error {
+func ModifyUser(id uint64, form *forms.UserForm) (*models.User, error) {
 	u := models.User{
 		Name:     form.Name,
 		Surname:  form.Surname,
 		Password: form.Password,
 		Email:    form.Email,
 	}
-	_, err := repo.EditUserByID(&u)
-	if err != nil {
-		return err
+	if err := validators.BeforeSave(&u); err != nil{
+		return nil, err
 	}
-	return nil
+	fmt.Println(form.Email)
+	edtdusr, err := repo.EditUserByID(id, &u)
+	if err != nil {
+		return nil, err
+	}
+	return edtdusr, nil
 }
 
 func GetUsers() (*[]models.User, error) {
 	ul, err := repo.FindUsers()
-	println(ul)
+	fmt.Println(ul)
 	if err != nil {
 		return nil, err
 	}
