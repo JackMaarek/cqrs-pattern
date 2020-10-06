@@ -19,6 +19,19 @@ func GetUserList(c *gin.Context) {
 
 }
 
+func GetUser(c *gin.Context) {
+	u, err := services.GetUser(c)
+	if err != nil {
+		return
+	}
+	if u == nil {
+		return
+	}
+	c.JSON(http.StatusOK, u)
+	return
+
+}
+
 func CreateUser(c *gin.Context) {
 	cmd, err := services.CreateUser(c)
 	if err != nil {
@@ -32,9 +45,17 @@ func CreateUser(c *gin.Context) {
 func UpdateUser(c *gin.Context) {
 	cmd, err := services.UpdateUser(c)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, err.Error())
-		c.Abort()
+		return
 	}
 	c.JSON(http.StatusCreated, cmd)
+	return
+}
+
+func DeleteUser(c *gin.Context)  {
+	err := services.RemoveUser(c)
+	if err != nil {
+		return
+	}
+	c.JSON(http.StatusOK, "User deleted")
 	return
 }
