@@ -16,8 +16,9 @@ type PUTUserCommand struct {
 }
 
 type DeleteUserCommand struct {
-	ID uint64
+	UserId uint64
 }
+
 type CreateUserCommandHandler struct {}
 
 func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interface{}, error) {
@@ -35,6 +36,11 @@ func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interfac
 		} else {
 			return usr, nil
 		}
+	case *DeleteUserCommand:
+		if err := DeleteUser(cmd.UserId); err != nil {
+			return nil, err
+		}
+		return nil, nil
 	default:
 		return nil, errors.New("bad command type")
 	}

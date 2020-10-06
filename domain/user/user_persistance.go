@@ -8,6 +8,23 @@ import (
 	"github.com/JackMaarek/cqrsPattern/application/validators"
 )
 
+func GetUsers() (*[]models.User, error) {
+	ul, err := repo.FindUsers()
+	fmt.Println(ul)
+	if err != nil {
+		return nil, err
+	}
+	return ul, nil
+}
+
+func GetUserByID(id uint64) (*models.User, error) {
+	u, err := repo.FindUserByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
 func PersistUser(form *forms.UserForm) (*models.User, error) {
 	u := models.User{
 		Name:     form.Name,
@@ -43,11 +60,10 @@ func ModifyUser(id uint64, form *forms.UserForm) (*models.User, error) {
 	return edtdusr, nil
 }
 
-func GetUsers() (*[]models.User, error) {
-	ul, err := repo.FindUsers()
-	fmt.Println(ul)
+func DeleteUser(id uint64) error {
+	err := repo.DeleteUserByID(id)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return ul, nil
+	return nil
 }

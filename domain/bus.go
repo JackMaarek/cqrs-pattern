@@ -14,5 +14,7 @@ func InitBuses()  {
 
 	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.CreateUserCommand{})
 	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.PUTUserCommand{})
-	_ = Qb.RegisterHandler(user.NewCreateUserQueryHandler(), &user.FindUserQuery{})
+	_ = Cb.RegisterHandler(user.NewCreateUserCommandHandler(), &user.DeleteUserCommand{})
+	_ = Qb.RegisterHandler(user.NewCreateUserQueryHandler(), &user.FindUsersQuery{})
+	_ = Qb.RegisterHandler(user.NewCreateUserQueryHandler(), &user.FindUserByIdQuery{})
 }
