@@ -2,7 +2,6 @@ package domain
 
 import (
 	"github.com/JackMaarek/cqrsPattern/chore/cqrs"
-	"github.com/JackMaarek/cqrsPattern/domain/event"
 	"github.com/JackMaarek/cqrsPattern/domain/users"
 )
 
@@ -18,7 +17,4 @@ func InitBuses() {
 	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.DeleteUserCommand{})
 	_ = Qb.RegisterHandler(users.NewCreateUserQueryHandler(), &users.FindUsersQuery{})
 	_ = Qb.RegisterHandler(users.NewCreateUserQueryHandler(), &users.FindUserByIdQuery{})
-
-	_ = Cb.RegisterHandler(event.NewCreateEventCommandHandler(), &event.CreateUserTopupAccountCommand{})
-	_ = Qb.RegisterHandler(event.NewCreateTopupQueryHandler(), &event.FindTopupEventQuery{})
 }

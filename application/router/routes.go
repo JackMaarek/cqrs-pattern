@@ -15,7 +15,4 @@ func SetupRouter(router *gin.Engine) {
 	users.PUT("/:id", controllers.UpdateUser)
 	users.DELETE("/:id", controllers.DeleteUser)
 
-	userTransaction := users.Group("/:id/transaction")
-	userTransaction.POST("/", controllers.UserTopupTransaction)
-	userTransaction.GET("/", controllers.UserTopupHistory)
 }

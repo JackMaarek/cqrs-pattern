@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-var ctx = context.Background()
+var Ctx = context.Background()
 var RedisClient *redis.Client
 
 type RedisConf struct {
@@ -27,7 +27,7 @@ func InitRedisClient() {
 		DB:       0,             // use default DB
 	})
 
-	pong, err := client.Ping(ctx).Result()
+	pong, err := client.Ping(Ctx).Result()
 	if err != nil {
 		log.Fatal("Cannot connect to redis client")
 	}
