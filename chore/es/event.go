@@ -59,4 +59,6 @@ type EventInterface interface {
 	GetType() Type
 	SetID(id uint64)
 	SetType(etype Type)
+	GetData() interface{}
+	SetData(d interface{})
 }
