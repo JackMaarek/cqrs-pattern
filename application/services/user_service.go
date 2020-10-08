@@ -24,20 +24,26 @@ func GetUserList(c *gin.Context) (interface{}, error) {
 func GetUser(c *gin.Context) (interface{}, error) {
 	id := util.ParseStringToUint64(c.Param("id"))
 	query := cqrs.NewQueryMessage(&users.FindUserByIdQuery{UserId: id})
-	ul, err := domain.Qb.Dispatch(query)
+	u, err := domain.Qb.Dispatch(query)
 	if err != nil {
 		c.JSON(http.StatusNoContent, "")
 		return nil, err
 	}
-	return ul, nil
+	return u, nil
 }
 
 func CreateUser(c *gin.Context) (interface{}, error) {
-	if err := validators.ValidateJsonHeader(c); err != nil{
+	if err := validators.ValidateJsonHeader(c); err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
 		return nil, err
 	}
 	userForm := forms.UserForm{}
 	if err := c.ShouldBindJSON(&userForm); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
+		return nil, err
+	}
+	if err := validators.ValidateUser(&userForm, ""); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return nil, err
 	}
 	command := cqrs.NewCommandMessage(&users.CreateUserCommand{UserForm: &userForm})
@@ -49,12 +55,17 @@ func CreateUser(c *gin.Context) (interface{}, error) {
 	return usr, nil
 }
 
-func UpdateUser(c *gin.Context) (interface{}, error){
-	if err := validators.ValidateJsonHeader(c); err != nil{
+func UpdateUser(c *gin.Context) (interface{}, error) {
+	if err := validators.ValidateJsonHeader(c); err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
 		return nil, err
 	}
 	userForm := forms.UserForm{}
 	if err := c.ShouldBindJSON(&userForm); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
+		return nil, err
+	}
+	if err := validators.ValidateUser(&userForm, ""); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return nil, err
 	}

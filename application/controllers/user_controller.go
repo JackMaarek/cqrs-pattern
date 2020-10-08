@@ -51,7 +51,7 @@ func UpdateUser(c *gin.Context) {
 	return
 }
 
-func DeleteUser(c *gin.Context)  {
+func DeleteUser(c *gin.Context) {
 	err := services.RemoveUser(c)
 	if err != nil {
 		return

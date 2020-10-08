@@ -3,6 +3,7 @@ package validators
 import (
 	"errors"
 	"github.com/JackMaarek/cqrsPattern/application/models"
+	"github.com/JackMaarek/cqrsPattern/application/structs/forms"
 	"github.com/badoux/checkmail"
 	"golang.org/x/crypto/bcrypt"
 	"strings"
@@ -28,7 +29,7 @@ func BeforeSave(user *models.User) error {
 	return nil
 }
 
-func ValidateUser(user *models.User, action string) error {
+func ValidateUser(user *forms.UserForm, action string) error {
 	switch strings.ToLower(action) {
 	case "update":
 		if user.Name == "" {

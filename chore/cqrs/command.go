@@ -14,14 +14,14 @@ type CommandBus struct {
 	handlers map[string]CommandHandler
 }
 
-func NewCommandBus() *CommandBus  {
+func NewCommandBus() *CommandBus {
 	return &CommandBus{
 		handlers: make(map[string]CommandHandler),
 	}
 }
 
 func (b *CommandBus) Dispatch(command CommandMessage) (interface{}, error) {
-	if handler, ok := b.handlers[command.CommandType()]; ok{
+	if handler, ok := b.handlers[command.CommandType()]; ok {
 		return handler.Handle(command)
 	}
 	return nil, fmt.Errorf("the command bus does not have a handler for commands of type: %s", command.CommandType())

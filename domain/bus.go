@@ -8,7 +8,7 @@ import (
 var Cb *cqrs.CommandBus
 var Qb *cqrs.QueryBus
 
-func InitBuses()  {
+func InitBuses() {
 	Cb = cqrs.NewCommandBus()
 	Qb = cqrs.NewQueryBus()
 

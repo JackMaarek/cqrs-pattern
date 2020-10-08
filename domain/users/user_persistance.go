@@ -6,6 +6,7 @@ import (
 	"github.com/JackMaarek/cqrsPattern/application/repo"
 	"github.com/JackMaarek/cqrsPattern/application/structs/forms"
 	"github.com/JackMaarek/cqrsPattern/application/validators"
+	"github.com/JackMaarek/cqrsPattern/chore/es"
 )
 
 func GetUsers() (*[]models.User, error) {
@@ -32,12 +33,16 @@ func PersistUser(form *forms.UserForm) (*models.User, error) {
 		Password: form.Password,
 		Email:    form.Email,
 	}
-	if err := validators.BeforeSave(&u); err != nil{
+	if err := validators.BeforeSave(&u); err != nil {
 		return nil, err
 	}
 	usr, err := repo.CreateUser(&u)
 	if err != nil {
 		return nil, err
+	}
+	err = es.NewUserCreatedEvent(u)
+	if err != nil {
+		fmt.Println("Cannot create user Created event")
 	}
 	return usr, nil
 }
@@ -49,7 +54,7 @@ func ModifyUser(id uint64, form *forms.UserForm) (*models.User, error) {
 		Password: form.Password,
 		Email:    form.Email,
 	}
-	if err := validators.BeforeSave(&u); err != nil{
+	if err := validators.BeforeSave(&u); err != nil {
 		return nil, err
 	}
 	fmt.Println(form.Email)

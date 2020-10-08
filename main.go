@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/JackMaarek/cqrsPattern/application/models"
+	"github.com/JackMaarek/cqrsPattern/application/conf"
 	routes "github.com/JackMaarek/cqrsPattern/application/router"
 	"github.com/JackMaarek/cqrsPattern/application/validators"
 	"github.com/JackMaarek/cqrsPattern/domain"
@@ -23,8 +23,9 @@ func main() {
 	if err := env.Parse(&cfg); err != nil {
 		log.Fatal(err)
 	}
-	models.InitializeDb(cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbName, cfg.DbPort)
-	models.MakeMigrations()
+	conf.InitializeDb(cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbName, cfg.DbPort)
+	conf.MakeMigrations()
+	conf.InitRedisClient()
 	router := gin.Default()
 	routes.SetupRouter(router)
 	validators.InitValidator()
