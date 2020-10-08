@@ -6,6 +6,7 @@ type User struct {
 	Surname  string  `gorm:"size:255" json:"surname"`
 	Password string  `gorm:"size:255" json:"-"`
 	Email    string  `gorm:"size:255" json:"email"`
+	Orders 	 []Order
 }
 
 type UserAccount struct {
