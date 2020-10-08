@@ -35,7 +35,6 @@ func GetUser(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	cmd, err := services.CreateUser(c)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return
 	}
 	c.JSON(http.StatusCreated, cmd)
