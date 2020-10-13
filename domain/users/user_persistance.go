@@ -6,7 +6,6 @@ import (
 	"github.com/JackMaarek/cqrsPattern/application/repo"
 	"github.com/JackMaarek/cqrsPattern/application/structs/forms"
 	"github.com/JackMaarek/cqrsPattern/application/validators"
-	"github.com/JackMaarek/cqrsPattern/chore/es"
 )
 
 func GetUsers() (*[]models.User, error) {
@@ -39,10 +38,6 @@ func PersistUser(form *forms.UserForm) (*models.User, error) {
 	usr, err := repo.CreateUser(&u)
 	if err != nil {
 		return nil, err
-	}
-	err = es.NewUserCreatedEvent(u)
-	if err != nil {
-		fmt.Println("Cannot create user Created event")
 	}
 	return usr, nil
 }

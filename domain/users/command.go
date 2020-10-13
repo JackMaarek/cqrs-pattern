@@ -21,7 +21,7 @@ type DeleteUserCommand struct {
 
 type CreateUserCommandHandler struct{}
 
-func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interface{}, error) {
+func (uch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interface{}, error) {
 
 	switch cmd := command.Payload().(type) {
 	case *CreateUserCommand:
@@ -42,7 +42,7 @@ func (ch CreateUserCommandHandler) Handle(command cqrs.CommandMessage) (interfac
 		}
 		return nil, nil
 	default:
-		return nil, errors.New("bad command type")
+		return nil, errors.New("unknown user command type")
 	}
 }
 

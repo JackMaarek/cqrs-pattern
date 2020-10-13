@@ -1,22 +1,19 @@
 package producer
 
 import (
-	"context"
 	"fmt"
 	"github.com/JackMaarek/cqrsPattern/application/conf"
-	"github.com/JackMaarek/cqrsPattern/chore/es"
+	"github.com/JackMaarek/cqrsPattern/chore/es/event_store"
 	"github.com/go-redis/redis/v8"
-	"strings"
 	"time"
 )
-
-var ctx = context.Background()
 
 const snapshotKey = "snapshot"
 
 type Snapshot interface {
-	StreamEvent(e *es.Event) error
-	SnapshotEvent(e *es.Event) error
+	ProduceEvent(e *estore.Event) (*estore.Event, error)
+	ConsumeEvent() (interface{}, error)
+	SnapshotEvent(e *estore.Event) error
 	RestoreEvent() error
 }
 
@@ -30,33 +27,47 @@ type redisClient struct {
 	client *redis.Client
 }
 
-func (r *redisClient) StreamEvent(e *es.Event) error {
+func (r *redisClient) ProduceEvent(e *estore.Event) (*estore.Event, error) {
+	fmt.Println(e)
 	json, err := e.MarshalBinary()
-	if err != nil {
-		fmt.Println("cannot marshal event %v", err)
-		return err
-	}
 	strCMD := r.client.XAdd(conf.Ctx,
 		&redis.XAddArgs{
-			Stream: strings.ReplaceAll(string(e.Type), " ", ""),
+			Stream: "events",
 			Values: map[string]interface{}{
-				"data": json,
+				"type": json,
 			},
 		})
 	newId, err := strCMD.Result()
+	fmt.Println(newId)
 	if err != nil {
 		fmt.Println("event error: %v", err)
-		return err
+		return nil, err
 	} else {
 		fmt.Println("event streamed: %v", newId)
-		return nil
+		e.SetID(newId)
+		return e, nil
 	}
 }
 
+func (r *redisClient) ConsumeEvent() (interface{}, error){
+	//_, err := r.client.XGroupCreate(conf.Ctx, "events", "test", "$").Result()
+	var el []*estore.Event
+	status, err := r.client.XRange(conf.Ctx, "events", "-", "+").Result()
+	for _, st := range status{
+		var e estore.Event
+		e.SetID(st.ID)
+		//e.SetType(st.Values)
+		el = append(el, &e)
+	}
+	fmt.Println(el)
+	return nil, nil
+}
 
-func (r *redisClient) SnapshotEvent(e *es.Event) error {
+
+func (r *redisClient) SnapshotEvent(e *estore.Event) error {
 	json, err:= e.MarshalBinary()
-	_, err = r.client.Set(ctx, snapshotKey, json, time.Hour*1).Result()
+	snap, err := r.client.Set(conf.Ctx, snapshotKey, json, time.Hour*1).Result()
+	fmt.Println(snap)
 	if err != nil {
 		return err
 	}
@@ -64,8 +75,8 @@ func (r *redisClient) SnapshotEvent(e *es.Event) error {
 }
 
 func (r *redisClient) RestoreEvent() error {
-	var e es.Event
-	snap, err := r.client.Get(ctx, snapshotKey).Result()
+	var e estore.Event
+	snap, err := r.client.Get(conf.Ctx, snapshotKey).Result()
 	if err != nil {
 		return err
 	}
@@ -73,6 +84,5 @@ func (r *redisClient) RestoreEvent() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(e.Data)
 	return nil
 }

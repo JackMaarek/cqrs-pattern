@@ -3,38 +3,39 @@ package es
 import (
 	"fmt"
 	"github.com/JackMaarek/cqrsPattern/application/conf"
+	"github.com/JackMaarek/cqrsPattern/chore/es/event_store"
 	"github.com/JackMaarek/cqrsPattern/chore/es/producer"
 )
 
-func NewUserCreatedEvent(d interface{}) error {
+func NewOrderCreatedEvent(d interface{}) error {
 	var err error
-	var e *Event
-	if e , err = NewEvent(UserCreated); err != nil {
+	var e *estore.Event
+	if e, err = NewEvent(OrderCreated); err != nil {
 		return err
 	} else {
-		e.SetData(d)
-		fmt.Println(e.GetData())
 		snapshot := producer.NewRedisClient(conf.RedisClient)
-		//err = snapshot.SnapshotEvent(e)
-		//err = snapshot.RestoreEvent()
-		err = snapshot.StreamEvent(e)
-		fmt.Println(err)
+		e, err = snapshot.ProduceEvent(e)
+		fmt.Println(e)
+		if err = snapshot.SnapshotEvent(e); err != nil{
+			fmt.Println(err)
+			return err
+		}
+		var i interface{}
+		i, err = snapshot.ConsumeEvent()
+		fmt.Println(i)
+		return nil
 	}
-	return nil
 }
 
-func NewUserUpdatedEvent(d interface{}) error {
+/*func NewUserUpdatedEvent() error {
 	var err error
-	var e *Event
+	var e estore.Event
 	if e , err = NewEvent(UserUpdated); err != nil {
 		return err
 	} else {
-		e.SetData(d)
 		snapshot := producer.NewRedisClient(conf.RedisClient)
-		//err = snapshot.SnapshotEvent(e)
-		//err = snapshot.RestoreEvent()
-		err = snapshot.StreamEvent(e)
+		err = snapshot.ProduceEvent(&e)
 		fmt.Println(err)
 	}
 	return nil
-}
+}*/

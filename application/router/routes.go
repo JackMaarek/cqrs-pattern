@@ -18,7 +18,7 @@ func SetupRouter(router *gin.Engine) {
 //<------------------ End Users --------------------------
 
 //>------------------ Orders --------------------------
-	orders := apiV1.Group("/order")
+	orders := apiV1.Group("/orders")
 	orders.POST("/", controllers.CreateOrder)
 //<------------------ End Orders --------------------------
 

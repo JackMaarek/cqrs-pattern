@@ -2,24 +2,37 @@ package es
 
 import (
 	"fmt"
+	"github.com/JackMaarek/cqrsPattern/chore/es/event_store"
 )
 
 const (
-	UserCreated Type = "User Created"
-	UserUpdated Type = "User Updated"
+	UserCreated  estore.Type = "User Created"
+	UserUpdated  estore.Type = "User Updated"
+	OrderCreated estore.Type = "Order Created"
 )
 
-func NewEvent(t Type) (*Event, error)   {
-	e := &Event{
+func NewEvent(t estore.Type) (*estore.Event, error)  {
+	e := &estore.Event{
 		Type: t,
 	}
 	switch t {
-	case UserCreated:
-		return e, nil
-	case UserUpdated:
+	case OrderCreated:
 		return e, nil
 	default:
 		return nil, fmt.Errorf("cannot find type %v", t)
 	}
+}
 
+func NewTypedEvent(t estore.Type) (estore.EventInterface, error)   {
+	e := &estore.Event{
+		Type: t,
+	}
+	switch t {
+	case OrderCreated:
+		return &estore.OrderEvent{
+			Event: e,
+		}, nil
+	default:
+		return nil, fmt.Errorf("cannot find type %v", t)
+	}
 }

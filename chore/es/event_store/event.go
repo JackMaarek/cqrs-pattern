@@ -1,6 +1,7 @@
-package es
+package estore
 
 import (
+	"encoding"
 	"encoding/json"
 	"fmt"
 )
@@ -8,16 +9,15 @@ import (
 type Type string
 
 type Event struct {
-	ID   uint64
+	ID   string `json:"-"`
 	Type Type
-	Data interface{}
 }
 
-func (e *Event) GetID() uint64 {
+func (e *Event) GetID() string {
 	return e.ID
 }
 
-func (e *Event) SetID(id uint64) {
+func (e *Event) SetID(id string) {
 	e.ID = id
 }
 
@@ -29,17 +29,10 @@ func (e *Event) SetType(etype Type) {
 	e.Type = etype
 }
 
-func (e *Event) GetData() interface{}  {
-	return e.Data
-}
-
-func (e *Event) SetData(d interface{})  {
-	e.Data = d
-}
 
 func (e *Event) String() string {
 
-	return fmt.Sprintf("id:%s type:%s data:%s", e.ID, e.Type, e.Data)
+	return fmt.Sprintf("id:%s type:%s", e.ID, e.Type)
 }
 
 func (e *Event) MarshalBinary() ([]byte, error) {
@@ -55,10 +48,10 @@ func (e *Event) UnmarshalBinary(data []byte) error {
 }
 
 type EventInterface interface {
-	GetID() uint64
+	GetID() string
 	GetType() Type
-	SetID(id uint64)
+	SetID(id string)
 	SetType(etype Type)
-	GetData() interface{}
-	SetData(d interface{})
+	encoding.BinaryMarshaler
+	encoding.BinaryUnmarshaler
 }
