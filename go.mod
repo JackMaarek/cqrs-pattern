@@ -10,6 +10,7 @@ require (
 	github.com/go-redis/redis/v8 v8.2.3
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/jinzhu/gorm v1.9.16
-	github.com/vmihailenco/msgpack/v4 v4.3.12
+	github.com/kr/pretty v0.1.0 // indirect
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
