@@ -19,9 +19,7 @@ func NewOrderCreatedEvent(d interface{}) error {
 			fmt.Println(err)
 			return err
 		}
-		var i interface{}
-		i, err = snapshot.ConsumeEvent()
-		fmt.Println(i)
+		_, err = snapshot.ConsumeEvent()
 		return nil
 	}
 }

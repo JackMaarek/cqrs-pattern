@@ -17,9 +17,13 @@ func InitBuses() {
 	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.CreateUserCommand{})
 	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.PUTUserCommand{})
 	_ = Cb.RegisterHandler(users.NewCreateUserCommandHandler(), &users.DeleteUserCommand{})
+	//<------------------ End User Commands --------------------------
+
+	//>------------------ User Queries --------------------------
 	_ = Qb.RegisterHandler(users.NewCreateUserQueryHandler(), &users.FindUsersQuery{})
 	_ = Qb.RegisterHandler(users.NewCreateUserQueryHandler(), &users.FindUserByIdQuery{})
-	//<------------------ End User Commands --------------------------
+	//<------------------ End User Queries --------------------------
+
 
 	//>------------------ Order Commands --------------------------
 	_ = Cb.RegisterHandler(orders.NewCreateOrderCommandHandler(), &orders.CreateOrderCommand{})

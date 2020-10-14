@@ -37,7 +37,6 @@ func (r *redisClient) ProduceEvent(e *estore.Event) (*estore.Event, error) {
 			},
 		})
 	newId, err := strCMD.Result()
-	fmt.Println(newId)
 	if err != nil {
 		fmt.Println("event error: %v", err)
 		return nil, err
@@ -58,14 +57,12 @@ func (r *redisClient) ConsumeEvent() (interface{}, error) {
 		//e.SetType(st.Values)
 		el = append(el, &e)
 	}
-	fmt.Println(el)
 	return nil, nil
 }
 
 func (r *redisClient) SnapshotEvent(e *estore.Event) error {
 	json, err := e.MarshalBinary()
-	snap, err := r.client.Set(conf.Ctx, snapshotKey, json, time.Hour*1).Result()
-	fmt.Println(snap)
+	_, err = r.client.Set(conf.Ctx, snapshotKey, json, time.Hour*1).Result()
 	if err != nil {
 		return err
 	}

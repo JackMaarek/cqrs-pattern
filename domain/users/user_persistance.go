@@ -52,7 +52,6 @@ func ModifyUser(id uint64, form *forms.UserForm) (*models.User, error) {
 	if err := validators.BeforeSave(&u); err != nil {
 		return nil, err
 	}
-	fmt.Println(form.Email)
 	edtdusr, err := repo.EditUserByID(id, &u)
 	if err != nil {
 		return nil, err
