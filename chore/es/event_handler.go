@@ -15,7 +15,6 @@ func NewOrderCreatedEvent(d interface{}) error {
 	} else {
 		snapshot := producer.NewRedisClient(conf.RedisClient)
 		e, err = snapshot.ProduceEvent(e)
-		fmt.Println(e)
 		if err = snapshot.SnapshotEvent(e); err != nil{
 			fmt.Println(err)
 			return err

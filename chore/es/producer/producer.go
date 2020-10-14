@@ -28,7 +28,6 @@ type redisClient struct {
 }
 
 func (r *redisClient) ProduceEvent(e *estore.Event) (*estore.Event, error) {
-	fmt.Println(e)
 	json, err := e.MarshalBinary()
 	strCMD := r.client.XAdd(conf.Ctx,
 		&redis.XAddArgs{
@@ -52,7 +51,7 @@ func (r *redisClient) ProduceEvent(e *estore.Event) (*estore.Event, error) {
 func (r *redisClient) ConsumeEvent() (interface{}, error){
 	//_, err := r.client.XGroupCreate(conf.Ctx, "events", "test", "$").Result()
 	var el []*estore.Event
-	status, err := r.client.XRange(conf.Ctx, "events", "-", "+").Result()
+	status, _ := r.client.XRange(conf.Ctx, "events", "-", "+").Result()
 	for _, st := range status{
 		var e estore.Event
 		e.SetID(st.ID)

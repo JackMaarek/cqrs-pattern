@@ -9,7 +9,7 @@ import (
 type Type string
 
 type Event struct {
-	ID   string `json:"-"`
+	ID   string
 	Type Type
 }
 
