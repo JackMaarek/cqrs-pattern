@@ -8,5 +8,6 @@ WORKDIR /go/src/github.com/JackMaarek/cqrs
 COPY . .
 # Run command to nstall the dependencies
 RUN go mod download
+RUN go build -o main .
 
 EXPOSE 8080
