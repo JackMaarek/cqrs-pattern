@@ -11,7 +11,7 @@ const (
 	OrderCreated estore.Type = "Order Created"
 )
 
-func NewEvent(t estore.Type) (*estore.Event, error)  {
+func NewEvent(t estore.Type) (*estore.Event, error) {
 	e := &estore.Event{
 		Type: t,
 	}
@@ -23,7 +23,7 @@ func NewEvent(t estore.Type) (*estore.Event, error)  {
 	}
 }
 
-func NewTypedEvent(t estore.Type) (estore.EventInterface, error)   {
+func NewTypedEvent(t estore.Type) (estore.EventInterface, error) {
 	e := &estore.Event{
 		Type: t,
 	}

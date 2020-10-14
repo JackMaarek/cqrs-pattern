@@ -29,7 +29,6 @@ func (e *Event) SetType(etype Type) {
 	e.Type = etype
 }
 
-
 func (e *Event) String() string {
 
 	return fmt.Sprintf("id:%s type:%s", e.ID, e.Type)

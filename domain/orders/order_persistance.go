@@ -9,14 +9,14 @@ import (
 )
 
 func PersistOrder(form *forms.OrderForm) (*models.Order, error) {
-	u , err := repo.FindUserByID(1)
+	u, err := repo.FindUserByID(1)
 	if err != nil {
 		return nil, err
 	}
 	o := models.Order{
 		TotalPrice: form.TotalPrice,
 		ItemCount:  form.ItemCount,
-		UserId: u.ID,
+		UserId:     u.ID,
 	}
 	co, err := repo.CreateOrder(&o)
 	if err != nil {

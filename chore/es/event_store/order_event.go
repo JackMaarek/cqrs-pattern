@@ -6,10 +6,10 @@ import (
 
 type OrderEvent struct {
 	*Event
-	UserID         uint64
-	ItemCount      uint64
-	TotalPrice 	   uint64
-	OrderStatus    string
+	UserID      uint64
+	ItemCount   uint64
+	TotalPrice  uint64
+	OrderStatus string
 }
 
 func (o *OrderEvent) MarshalBinary() ([]byte, error) {

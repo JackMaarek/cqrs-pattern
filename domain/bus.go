@@ -25,5 +25,4 @@ func InitBuses() {
 	_ = Cb.RegisterHandler(orders.NewCreateOrderCommandHandler(), &orders.CreateOrderCommand{})
 	//<------------------ End Order Commands --------------------------
 
-
 }

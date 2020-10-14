@@ -48,11 +48,11 @@ func (r *redisClient) ProduceEvent(e *estore.Event) (*estore.Event, error) {
 	}
 }
 
-func (r *redisClient) ConsumeEvent() (interface{}, error){
+func (r *redisClient) ConsumeEvent() (interface{}, error) {
 	//_, err := r.client.XGroupCreate(conf.Ctx, "events", "test", "$").Result()
 	var el []*estore.Event
 	status, _ := r.client.XRange(conf.Ctx, "events", "-", "+").Result()
-	for _, st := range status{
+	for _, st := range status {
 		var e estore.Event
 		e.SetID(st.ID)
 		//e.SetType(st.Values)
@@ -62,9 +62,8 @@ func (r *redisClient) ConsumeEvent() (interface{}, error){
 	return nil, nil
 }
 
-
 func (r *redisClient) SnapshotEvent(e *estore.Event) error {
-	json, err:= e.MarshalBinary()
+	json, err := e.MarshalBinary()
 	snap, err := r.client.Set(conf.Ctx, snapshotKey, json, time.Hour*1).Result()
 	fmt.Println(snap)
 	if err != nil {
@@ -79,7 +78,7 @@ func (r *redisClient) RestoreEvent() error {
 	if err != nil {
 		return err
 	}
-	err  = e.UnmarshalBinary([]byte(snap))
+	err = e.UnmarshalBinary([]byte(snap))
 	if err != nil {
 		return err
 	}

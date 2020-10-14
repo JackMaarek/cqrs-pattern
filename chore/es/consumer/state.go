@@ -4,7 +4,7 @@ import "encoding/json"
 
 type State struct {
 	LastEventID uint64
-	UserId 		uint64
+	UserId      uint64
 }
 
 func (s *State) GetEventType() uint64 {
@@ -19,7 +19,7 @@ func (s *State) GetUserId() uint64 {
 	return s.UserId
 }
 
-func (s *State) SetUserId(id uint64)  {
+func (s *State) SetUserId(id uint64) {
 	s.UserId = id
 }
 
