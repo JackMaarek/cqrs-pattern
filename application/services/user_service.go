@@ -42,10 +42,6 @@ func CreateUser(c *gin.Context) (interface{}, error) {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return nil, err
 	}
-	if err := validators.ValidateUser(&userForm, ""); err != nil {
-		c.JSON(http.StatusUnprocessableEntity, err.Error())
-		return nil, err
-	}
 	command := cqrs.NewCommandMessage(&users.CreateUserCommand{UserForm: &userForm})
 	usr, err := domain.Cb.Dispatch(command)
 	if err != nil {
@@ -62,10 +58,6 @@ func UpdateUser(c *gin.Context) (interface{}, error) {
 	}
 	userForm := forms.UserForm{}
 	if err := c.ShouldBindJSON(&userForm); err != nil {
-		c.JSON(http.StatusUnprocessableEntity, err.Error())
-		return nil, err
-	}
-	if err := validators.ValidateUser(&userForm, ""); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return nil, err
 	}
