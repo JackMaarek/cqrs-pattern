@@ -8,13 +8,26 @@ Introduction to Event sourcing and CQRS application architecture patterns into p
 - redis
 - docker
 
-## Project setup
+## Project setup (Docker)
 1- Clone the repository
 
-2- Run `docker-compose up --build` to build the containers
+2- Run `docker-compose up --build` to build the containers.
 
-3- Enter the app container with `docker-compose exec app /bin/sh` and then compile the go app with `go build -o main .`
+3- Import the `CQRS-ES.postman_collection.json` file in postman in order to test the routes.
 
-4- Run the application with the binary `./main`
+> You can use [redis insight](https://redislabs.com/redis-enterprise/redis-insight/) to check the events stored in redis.  
 
-> You need to build the project each time a change has been done.
+> Conn parameter: Name: cqrs, Port: 6379, Password: cqrs
+
+> For now the only event stored is the order created event.
+
+Ports: 
+
+- MySQL: `3306`
+- Redis: `6379`
+- GoApp: `8000`
+
+## Note
+CQRS is implemented with the user's commands and queries.
+
+Event Sourcing is not yet working, the only working side is that the order created event is stored in redis streams and a snapshot is created. 
